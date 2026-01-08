@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: skyblue;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    height: 60px;
+    width: auto;
+}
+
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    min-height: 80vh;
+}
+
+.department-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+h2 {
+    color: skyblue;
+    border-left: 5px solid skyblue;
+    padding-left: 10px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+li {
+    padding: 5px 0;
+    font-size: 1.1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+}
