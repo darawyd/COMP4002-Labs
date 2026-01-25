@@ -1,0 +1,16 @@
+.nav {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 2rem;
+    background: #0b3c5d;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav a.active {
+    text-decoration: underline;
+}
