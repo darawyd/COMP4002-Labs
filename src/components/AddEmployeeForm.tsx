@@ -43,29 +43,34 @@ export default function AddEmployeeForm({
 
     return (
         <form onSubmit={handleSubmit}>
-            <h3>Add New Employee</h3>
+            <h3 id="add-employee-heading">Add New Employee</h3>
 
             {error && <p style={{ color: "red" }}>{error}</p>}
 
             <div>
-                <label>First Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input
+                    id="firstName"
+                    type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                 />
             </div>
 
             <div>
-                <label>Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input
+                    id="lastName"
+                    type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                 />
             </div>
 
             <div>
-                <label>Department</label>
+                <label htmlFor="department">Department</label>
                 <select
+                    id="department"
                     value={department}
                     onChange={(e) => setDepartment(e.target.value)}
                 >
