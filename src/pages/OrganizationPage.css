@@ -1,0 +1,35 @@
+.org {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    min-height: 80vh;
+}
+
+.org h2 {
+    color: #0b3c5d;
+    margin-bottom: 1rem;
+}
+
+.org-table {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.org-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0.75rem;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+
+.org-name {
+    font-weight: 600;
+}
+
+.org-role {
+    text-align: right;
+    color: #333;
+}
