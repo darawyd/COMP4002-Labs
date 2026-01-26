@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import EmployeesPage from "./pages/EmployeesPage";
 import OrganizationPage from "./pages/OrganizationPage";
+import "./App.css";
 
 export default function App() {
     return (

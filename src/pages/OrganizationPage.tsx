@@ -3,7 +3,7 @@ import "./OrganizationPage.css";
 
 export default function OrganizationPage() {
     return (
-        <main className="org">
+        <main className="page org">
             <h2>Leadership and Management</h2>
 
             <div
