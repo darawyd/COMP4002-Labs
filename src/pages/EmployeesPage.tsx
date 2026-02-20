@@ -1,23 +1,15 @@
 import { useState } from "react";
 import EmployeeList from "../components/EmployeeList";
 import AddEmployeeForm from "../components/AddEmployeeForm";
-import { departments as initialDepartments } from "../data/departments";
-import type { Department, Employee } from "../types";
+// import { departments as initialDepartments } from "../data/departments";
+import type { Department } from "../types";
+import { employeeRepo } from "../repositories/employeeRepo";
 import "./EmployeesPage.css";
 
 export default function EmployeesPage() {
-    const [departments, setDepartments] =
-        useState<Department[]>(initialDepartments);
-
-    const handleAddEmployee = (deptName: string, employee: Employee) => {
-        setDepartments((prev) =>
-            prev.map((dept) =>
-                dept.name === deptName
-                    ? { ...dept, employees: [...dept.employees, employee] }
-                    : dept,
-            ),
-        );
-    };
+    const [departments, setDepartments] = useState<Department[]>(
+        employeeRepo.getDepartments(),
+    );
 
     return (
         <main className="page" aria-labelledby="employees-heading">
@@ -27,7 +19,7 @@ export default function EmployeesPage() {
 
             <AddEmployeeForm
                 departments={departments}
-                onAddEmployee={handleAddEmployee}
+                onDepartmentsUpdated={setDepartments}
             />
         </main>
     );
