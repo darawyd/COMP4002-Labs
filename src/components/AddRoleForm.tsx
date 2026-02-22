@@ -1,6 +1,5 @@
 import useFormInput from "../hooks/useFormInput";
-import { createOrganizationRecord } from "../services/organizationService";
-import type { Role } from "../types";
+import { organizationService } from "../services/organizationService";
 
 type Props = {
     onSuccess: () => void;
@@ -17,19 +16,21 @@ export default function AddRoleForm({ onSuccess }: Props) {
         firstName.clearMessage();
         role.clearMessage();
 
-        const result = createOrganizationRecord({
+        const result = organizationService.create({
             firstName: firstName.value,
             lastName: lastName.value,
             role: role.value,
-        } as Role);
+        });
 
         if (!result.ok && result.field) {
             if (result.field === "firstName") {
                 firstName.setMessage(result.message ?? "");
             }
+
             if (result.field === "role") {
                 role.setMessage(result.message ?? "");
             }
+
             return;
         }
 
@@ -45,19 +46,31 @@ export default function AddRoleForm({ onSuccess }: Props) {
             <h3>Add New Role</h3>
 
             <div>
-                <label>First Name</label>
-                <input value={firstName.value} onChange={firstName.onChange} />
+                <label htmlFor="role-firstName">First Name</label>
+                <input
+                    id="role-firstName"
+                    value={firstName.value}
+                    onChange={firstName.onChange}
+                />
                 {firstName.message && <p>{firstName.message}</p>}
             </div>
 
             <div>
-                <label>Last Name</label>
-                <input value={lastName.value} onChange={lastName.onChange} />
+                <label htmlFor="role-lastName">Last Name</label>
+                <input
+                    id="role-lastName"
+                    value={lastName.value}
+                    onChange={lastName.onChange}
+                />
             </div>
 
             <div>
-                <label>Role</label>
-                <input value={role.value} onChange={role.onChange} />
+                <label htmlFor="role-name">Role</label>
+                <input
+                    id="role-name"
+                    value={role.value}
+                    onChange={role.onChange}
+                />
                 {role.message && <p>{role.message}</p>}
             </div>
 
