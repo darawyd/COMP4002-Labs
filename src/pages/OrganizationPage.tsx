@@ -18,8 +18,6 @@ export default function OrganizationPage() {
         <main className="page org">
             <h2>Leadership and Management</h2>
 
-            <AddRoleForm onSuccess={reload} />
-
             <div
                 className="org-table"
                 role="table"
@@ -40,6 +38,7 @@ export default function OrganizationPage() {
                     </div>
                 ))}
             </div>
+            <AddRoleForm onSuccess={reload} />
         </main>
     );
 }
