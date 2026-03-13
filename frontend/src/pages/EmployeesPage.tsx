@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmployeeList from "../components/EmployeeList";
 import AddEmployeeForm from "../components/AddEmployeeForm";
 // import { departments as initialDepartments } from "../data/departments";
@@ -7,9 +7,16 @@ import { employeeRepo } from "../repositories/employeeRepo";
 import "./EmployeesPage.css";
 
 export default function EmployeesPage() {
-    const [departments, setDepartments] = useState<Department[]>(
-        employeeRepo.getDepartments(),
-    );
+    const [departments, setDepartments] = useState<Department[]>([]);
+
+    useEffect(() => {
+        async function load() {
+            const data = await employeeRepo.getDepartments();
+            setDepartments(data);
+        }
+
+        load();
+    }, []);
 
     return (
         <main className="page" aria-labelledby="employees-heading">

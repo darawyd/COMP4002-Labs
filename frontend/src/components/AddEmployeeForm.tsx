@@ -1,7 +1,8 @@
 //import { useState } from "react";
-import type { Department } from "../types";
+import type { Department, Employee } from "../types";
 import useFormInput from "../hooks/useFormInput";
-import { employeeService } from "../services/employeeService";
+//import { employeeService } from "../services/employeeService";
+import { employeeRepo } from "../repositories/employeeRepo";
 
 type Props = {
     departments: Department[];
@@ -16,35 +17,41 @@ export default function AddEmployeeForm({
     const lastName = useFormInput("");
     const department = useFormInput("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         firstName.clearMessage();
         department.clearMessage();
 
-        firstName.validate((v) =>
-            v.trim().length >= 3
-                ? null
-                : "First name must be at least 3 characters.",
-        );
-        const result = employeeService.createEmployee(department.value, {
-            firstName: firstName.value,
-            lastName: lastName.value || undefined,
-        });
-
-        if (!result.ok) {
-            if (result.field === "firstName")
-                firstName.setMessage(result.message);
-            else if (result.field === "department")
-                department.setMessage(result.message);
+        if (firstName.value.trim().length < 3) {
+            firstName.setMessage("First name must be at least 3 characters.");
             return;
         }
 
-        onDepartmentsUpdated(result.departments);
+        if (!department.value) {
+            department.setMessage("Please select a department.");
+            return;
+        }
 
-        firstName.setValue("");
-        lastName.setValue("");
-        department.setValue("");
+        const employee: Employee = {
+            firstName: firstName.value,
+            lastName: lastName.value || undefined,
+        };
+
+        try {
+            const updatedDepartments = await employeeRepo.createEmployee(
+                department.value,
+                employee,
+            );
+
+            onDepartmentsUpdated(updatedDepartments);
+
+            firstName.setValue("");
+            lastName.setValue("");
+            department.setValue("");
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (

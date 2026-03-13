@@ -1,5 +1,7 @@
 import useFormInput from "../hooks/useFormInput";
-import { organizationService } from "../services/organizationService";
+//import { organizationService } from "../services/organizationService";
+import { organizationRepo } from "../repositories/organizationRepo";
+import { Role } from "../types";
 
 type Props = {
     onSuccess: () => void;
@@ -10,35 +12,39 @@ export default function AddRoleForm({ onSuccess }: Props) {
     const lastName = useFormInput("");
     const role = useFormInput("");
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         firstName.clearMessage();
         role.clearMessage();
 
-        const result = organizationService.create({
-            firstName: firstName.value,
-            lastName: lastName.value,
-            role: role.value,
-        });
-
-        if (!result.ok && result.field) {
-            if (result.field === "firstName") {
-                firstName.setMessage(result.message ?? "");
-            }
-
-            if (result.field === "role") {
-                role.setMessage(result.message ?? "");
-            }
-
+        if (firstName.value.trim().length < 3) {
+            firstName.setMessage("First name must be at least 3 characters.");
             return;
         }
 
-        firstName.setValue("");
-        lastName.setValue("");
-        role.setValue("");
+        if (!role.value.trim()) {
+            role.setMessage("Role cannot be empty.");
+            return;
+        }
 
-        onSuccess();
+        const record: Role = {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            role: role.value,
+        };
+
+        try {
+            await organizationRepo.add(record);
+
+            firstName.setValue("");
+            lastName.setValue("");
+            role.setValue("");
+
+            onSuccess();
+        } catch (err) {
+            console.error("Failed to add role:", err);
+        }
     };
 
     return (
