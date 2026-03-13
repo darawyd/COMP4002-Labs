@@ -1,27 +1,22 @@
-import { roles } from "../data/roles";
 import type { Role } from "../types";
 
-const STORAGE_KEY = "organization";
+const API = "http://localhost:3000/api/organization";
 
 export const organizationRepo = {
-    getAll(): Role[] {
-        const data = localStorage.getItem(STORAGE_KEY);
-
-        if (!data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(roles));
-            return roles;
-        }
-
-        return JSON.parse(data);
+    async getAll(): Promise<Role[]> {
+        const res = await fetch(API);
+        return res.json();
     },
 
-    add(record: Role): void {
-        const records = this.getAll();
-        records.push(record);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    },
+    async add(record: Role) {
+        const res = await fetch(API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(record),
+        });
 
-    roleExists(role: string): boolean {
-        return this.getAll().some((r) => r.role === role);
+        return res.json();
     },
 };
