@@ -1,11 +1,24 @@
-let employees: any[] = [];
+import { departments } from "../data/departments.js";
+import type { Department, Employee } from "../types.js";
 
-export const employeeRepo = {
-    getAll() {
-        return employees;
+let store: Department[] = JSON.parse(JSON.stringify(departments));
+
+export const employeeRepository = {
+    getDepartments(): Department[] {
+        return store;
     },
 
-    add(emp: any) {
-        employees.push(emp);
+    departmentExists(name: string): boolean {
+        return store.some((d) => d.name === name);
+    },
+
+    createEmployee(deptName: string, employee: Employee): Department[] {
+        store = store.map((d) =>
+            d.name === deptName
+                ? { ...d, employees: [...d.employees, employee] }
+                : d,
+        );
+
+        return store;
     },
 };
