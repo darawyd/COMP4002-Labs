@@ -1,18 +1,21 @@
 // import { roles } from "../data/roles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Role } from "../types";
 import { organizationRepo } from "../repositories/organizationRepo";
 import AddRoleForm from "../components/AddRoleForm";
 import "./OrganizationPage.css";
 
 export default function OrganizationPage() {
-    const [records, setRecords] = useState<Role[]>(() =>
-        organizationRepo.getAll(),
-    );
+    const [records, setRecords] = useState<Role[]>([]);
 
-    const reload = () => {
-        setRecords(organizationRepo.getAll());
-    };
+    useEffect(() => {
+        async function load() {
+            const data = await organizationRepo.getAll();
+            setRecords(data);
+        }
+
+        load();
+    }, []);
 
     return (
         <main className="page org">
@@ -38,7 +41,12 @@ export default function OrganizationPage() {
                     </div>
                 ))}
             </div>
-            <AddRoleForm onSuccess={reload} />
+            <AddRoleForm
+                onSuccess={async () => {
+                    const data = await organizationRepo.getAll();
+                    setRecords(data);
+                }}
+            />
         </main>
     );
 }
