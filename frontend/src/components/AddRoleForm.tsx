@@ -1,7 +1,7 @@
 import useFormInput from "../hooks/useFormInput";
 //import { organizationService } from "../services/organizationService";
 import { organizationRepo } from "../repositories/organizationRepo";
-import { Role } from "../types";
+import type { Role } from "../types";
 
 type Props = {
     onSuccess: () => void;
