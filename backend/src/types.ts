@@ -1,6 +1,6 @@
 export interface Employee {
     firstName: string;
-    lastName?: string;
+    lastName?: string | null;
 }
 
 export interface Department {

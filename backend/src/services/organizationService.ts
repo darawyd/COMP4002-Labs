@@ -2,16 +2,16 @@ import { organizationRepository } from "../repositories/organizationRepository.j
 import type { Role } from "../types.js";
 
 export const organizationService = {
-    getAll() {
+    async getAll() {
         return organizationRepository.getAll();
     },
 
-    create(record: Role) {
+    async create(record: Role) {
         if (record.firstName.length < 3) {
             throw new Error("First name must be at least 3 characters");
         }
 
-        if (organizationRepository.roleExists(record.role)) {
+        if (await organizationRepository.roleExists(record.role)) {
             throw new Error("Role already occupied");
         }
 

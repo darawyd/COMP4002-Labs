@@ -1,24 +1,48 @@
-import { departments } from "../data/departments.js";
+import { PrismaClient } from "@prisma/client";
 import type { Department, Employee } from "../types.js";
 
-let store: Department[] = JSON.parse(JSON.stringify(departments));
+const prisma = new PrismaClient();
 
 export const employeeRepository = {
-    getDepartments(): Department[] {
-        return store;
+    async getDepartments(): Promise<Department[]> {
+        return prisma.department.findMany({
+            include: {
+                employees: true,
+            },
+        });
     },
 
-    departmentExists(name: string): boolean {
-        return store.some((d) => d.name === name);
+    async departmentExists(name: string): Promise<boolean> {
+        const dept = await prisma.department.findFirst({
+            where: { name },
+        });
+        return !!dept;
     },
 
-    createEmployee(deptName: string, employee: Employee): Department[] {
-        store = store.map((d) =>
-            d.name === deptName
-                ? { ...d, employees: [...d.employees, employee] }
-                : d,
-        );
+    async createEmployee(
+        deptName: string,
+        employee: Employee,
+    ): Promise<Department[]> {
+        const dept = await prisma.department.findFirst({
+            where: { name: deptName },
+        });
 
-        return store;
+        if (!dept) {
+            throw new Error("Department not found");
+        }
+
+        await prisma.employee.create({
+            data: {
+                firstName: employee.firstName,
+                lastName: employee.lastName ?? null,
+                departmentId: dept.id,
+            },
+        });
+
+        return prisma.department.findMany({
+            include: {
+                employees: true,
+            },
+        });
     },
 };
